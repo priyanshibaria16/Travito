@@ -1,11 +1,20 @@
 "use client";
 
-import { login, logout } from "@/lib/auth-actions";
-import { Session } from "next-auth";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Navbar({ session }: { session: Session | null }) {
+export default function Navbar() {
+  const { data: session } = useSession();
+  
+  const handleLogin = () => {
+    signIn('github', { callbackUrl: '/' });
+  };
+  
+  const handleLogout = () => {
+    signOut({ callbackUrl: '/' });
+  };
+
   return (
     <nav className="bg-white shadow-md py-4 border-b border-gray-200">
       {" "}
@@ -35,7 +44,7 @@ export default function Navbar({ session }: { session: Session | null }) {
 
               <button
                 className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-sm cursor-pointer"
-                onClick={logout}
+                onClick={handleLogout}
               >
                 Sign Out
               </button>
@@ -43,7 +52,7 @@ export default function Navbar({ session }: { session: Session | null }) {
           ) : (
             <button
               className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-sm cursor-pointer"
-              onClick={login}
+              onClick={handleLogin}
             >
               Sign In
               <svg

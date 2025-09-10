@@ -1,11 +1,13 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
-
 export const login = async () => {
-  await signIn("github", { redirectTo: "/" });
+  // The actual sign-in is handled by NextAuth's built-in signIn function
+  // This is just a placeholder that will be handled by the client-side
+  return { redirect: "/api/auth/signin" };
 };
 
 export const logout = async () => {
-  await signOut({ redirectTo: "/" });
+  // The actual sign-out is handled by NextAuth's built-in signOut function
+  // This is just a placeholder that will be handled by the client-side
+  return { redirect: "/api/auth/signout" };
 };
