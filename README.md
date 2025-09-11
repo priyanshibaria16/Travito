@@ -1,5 +1,32 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment Variables
+
+Create a `.env.local` file in the root directory and add the following environment variables:
+
+```bash
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/travito?schema=public"
+
+# NextAuth
+NEXTAUTH_SECRET="your-secret-here"
+NEXTAUTH_URL="http://localhost:3000"
+
+# GitHub OAuth
+GITHUB_ID="your-github-client-id"
+GITHUB_SECRET="your-github-client-secret"
+```
+
+### Getting GitHub OAuth Credentials
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click "New OAuth App"
+3. Set the following:
+   - Application name: `Travito`
+   - Homepage URL: `http://localhost:3000`
+   - Authorization callback URL: `http://localhost:3000/api/auth/callback/github`
+4. Click "Register application"
+5. Generate a new client secret and add both the Client ID and Secret to your `.env.local` file
+
 ## Getting Started
 
 First, run the development server:
