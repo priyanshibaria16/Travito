@@ -5,24 +5,44 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 export function Navbar() {
   const { data: session, status } = useSession();
   const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
   const isLoading = status === 'loading';
+  
+
+  // Set isMounted to true after component mounts
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Don't show navbar on auth pages
-  if (pathname.startsWith('/auth')) {
+  if (pathname.startsWith('/auth') || !isMounted) {
     return null;
   }
 
-  // Show nothing while loading
+  // Show loading state
   if (isLoading) {
-    return null;
+    return (
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center">
+          <div className="flex-1">
+            <div className="h-6 w-24 animate-pulse rounded-md bg-muted" />
+          </div>
+        </div>
+      </header>
+    );
   }
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/' });
+    try {
+      await signOut({ callbackUrl: '/' });
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (

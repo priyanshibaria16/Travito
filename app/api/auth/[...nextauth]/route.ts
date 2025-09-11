@@ -1,6 +1,6 @@
-import NextAuth from "next-auth";
-import { authOptions } from "@/auth";
+// Export the handlers for the API route
+export { handlers as GET } from "@/auth";
+export { handlers as POST } from "@/auth";
 
-const handler = NextAuth(authOptions);
-
-export const { GET, POST } = handler;
+// This is a catch-all route for NextAuth.js
+// All auth routes (/api/auth/*) will be handled by these handlers

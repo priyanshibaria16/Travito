@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
 import { getServerAuthSession } from "@/auth";
 import { Providers } from "@/components/providers";
 
@@ -25,14 +25,22 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerAuthSession();
+  let session = null;
+  
+  try {
+    session = await getServerAuthSession();
+  } catch (error) {
+    console.error('Error getting auth session in layout:', error);
+  }
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers session={session}>
           <Navbar />
-          {children}
+          <main className="min-h-[calc(100vh-4rem)]">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>
