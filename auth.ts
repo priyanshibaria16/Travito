@@ -1,22 +1,20 @@
-import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
-import Google from "next-auth/providers/google";
-import Credentials from "next-auth/providers/credentials";
+import NextAuth, { type NextAuthOptions } from "next-auth";
+import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import type { Session, User } from "next-auth";
-import type { JWT } from "next-auth/jwt";
-import type { AuthOptions } from "next-auth";
+import type { User } from "next-auth";
 import bcrypt from 'bcryptjs';
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();
 
 // Validate required environment variables
-const githubClientId = process.env.GITHUB_ID;
-const githubClientSecret = process.env.GITHUB_SECRET;
-const googleClientId = process.env.GOOGLE_CLIENT_ID;
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const githubClientId = process.env.GITHUB_ID || '';
+const githubClientSecret = process.env.GITHUB_SECRET || '';
+const googleClientId = process.env.GOOGLE_CLIENT_ID || '';
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
 const authSecret = process.env.NEXTAUTH_SECRET || 'dev-secret-change-in-production';
 const nodeEnv = process.env.NODE_ENV || 'development';
 
@@ -53,13 +51,12 @@ if (nodeEnv === 'production') {
 }
 
 // Configuration for NextAuth
-const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  // Configure authentication providers
+const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma) as any,
   providers: [
     // GitHub Provider
     ...(githubClientId && githubClientSecret ? [
-      GitHub({
+      GitHubProvider({
         clientId: githubClientId,
         clientSecret: githubClientSecret,
       })
@@ -67,15 +64,14 @@ const authOptions: AuthOptions = {
     
     // Google Provider
     ...(googleClientId && googleClientSecret ? [
-      Google({
+      GoogleProvider({
         clientId: googleClientId,
         clientSecret: googleClientSecret,
       })
     ] : []),
     
     // Email/Password Provider
-    Credentials({
-      id: 'credentials',
+    CredentialsProvider({
       name: 'Credentials',
       credentials: {
         email: { label: "Email", type: "email" },
@@ -113,21 +109,14 @@ const authOptions: AuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    signUp: '/auth/register',
     error: '/auth/error',
   },
   callbacks: {
-    async session({ session, token }): Promise<Session> {
-      if (session.user && token.sub) {
-        (session.user as User & { id: string }).id = token.sub;
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.sub as string;
       }
       return session;
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
     },
   },
   debug: nodeEnv === 'development',
@@ -139,22 +128,12 @@ export { authOptions };
 // Create the auth handler
 const handler = NextAuth(authOptions);
 
-// Export the auth function for server components
-export const auth = handler.auth;
-
-// Export signIn and signOut functions
-export const signIn = handler.signIn;
-export const signOut = handler.signOut;
+// Export the handler and its methods
+export const { auth, signIn, signOut } = handler;
 
 // Helper to get the session in server components
-export const getServerAuthSession = async () => {
-  try {
-    const session = await auth();
-    return session;
-  } catch (error) {
-    console.error('Error getting server auth session:', error);
-    return null;
-  }
+export const getServerAuthSession = () => {
+  return auth();
 };
 
 // Export the handler for the API route

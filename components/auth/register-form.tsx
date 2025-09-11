@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,6 +40,7 @@ export function RegisterForm() {
     setIsLoading(true);
 
     try {
+      // First, register the user
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
@@ -56,29 +58,20 @@ export function RegisterForm() {
         throw new Error(errorData.error || 'Registration failed');
       }
 
-      // Sign in the user after successful registration
-      const signInResponse = await fetch('/api/auth/callback/credentials', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          email: formData.email,
-          password: formData.password,
-          callbackUrl: searchParams.get('callbackUrl') || '/',
-          redirect: 'false',
-        }),
+      // Then sign in the user
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+        callbackUrl: searchParams.get('callbackUrl') || '/',
       });
 
-      if (!signInResponse.ok) {
-        router.push('/auth/signin');
-        return;
+      if (result?.error) {
+        throw new Error(result.error);
       }
 
       // Redirect to the callback URL or home page
-      const data = await signInResponse.json();
-      const url = data.url || '/';
-      router.push(url);
+      router.push(result?.url || '/');
     } catch (error) {
       console.error('Registration error:', error);
       setError(error instanceof Error ? error.message : 'Registration failed');

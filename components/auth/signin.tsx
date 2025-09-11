@@ -1,34 +1,57 @@
 'use client';
 
 import { signIn } from "next-auth/react";
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 
 export function SignIn() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
-  const error = searchParams.get('error');
+  
+  // Handle errors from the URL (e.g., from OAuth providers)
+  useEffect(() => {
+    const errorParam = searchParams.get('error');
+    if (errorParam === 'OAuthAccountNotLinked') {
+      setError('An account with the same email already exists but is linked to a different provider.');
+    } else if (errorParam) {
+      setError('An error occurred during sign in. Please try again.');
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     try {
-      await signIn('credentials', {
+      const result = await signIn('credentials', {
         email,
         password,
+        redirect: false,
         callbackUrl,
-        redirect: true,
       });
+
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+
+      if (result?.url) {
+        router.push(result.url);
+      } else {
+        // Default redirect if no URL is provided
+        router.push('/');
+      }
     } catch (error) {
       console.error('Login error:', error);
+      setError(error instanceof Error ? error.message : 'An error occurred during sign in');
     } finally {
       setIsLoading(false);
     }
