@@ -47,8 +47,12 @@ export function Navbar() {
   };
 
   const navLinks = [
+    { name: 'Home', href: '/' },
     { name: 'Explore', href: '/explore' },
     { name: 'Destinations', href: '/destinations' },
+    { name: 'Tours', href: '/tours' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
     { name: 'My Trips', href: '/trips', requiresAuth: true },
   ];
 
@@ -57,9 +61,14 @@ export function Navbar() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Travito
-            </span>
+            <Image 
+              src="/logo-new.svg" 
+              alt="Travito Logo" 
+              width={160} 
+              height={40} 
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
             {navLinks.map((link) => {

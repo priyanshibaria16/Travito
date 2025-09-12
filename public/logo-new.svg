@@ -1,0 +1,14 @@
+<svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20 0C8.9543 0 0 8.9543 0 20C0 31.0457 8.9543 40 20 40C31.0457 40 40 31.0457 40 20C40 8.9543 31.0457 0 20 0Z" fill="#4F46E5"/>
+  <path d="M26 14C26 11.7909 24.2091 10 22 10C19.7909 10 18 11.7909 18 14V26C18 28.2091 19.7909 30 22 30C24.2091 30 26 28.2091 26 26V14Z" fill="white"/>
+  <path d="M14 18C14 15.7909 12.2091 14 10 14C7.79086 14 6 15.7909 6 18V26C6 28.2091 7.79086 30 10 30C12.2091 30 14 28.2091 14 26V18Z" fill="white"/>
+  <path d="M34 18C34 15.7909 35.7909 14 38 14C40.2091 14 42 15.7909 42 18V26C42 28.2091 40.2091 30 38 30C35.7909 30 34 28.2091 34 26V18Z" fill="white"/>
+  <path d="M70 15H60V35H64V25H70V21H64V19H70V15Z" fill="currentColor"/>
+  <path d="M90 15H86V35H90V15Z" fill="currentColor"/>
+  <path d="M110 15H106V35H110V15Z" fill="currentColor"/>
+  <path d="M130 15H126V35H130V15Z" fill="currentColor"/>
+  <path d="M150 15H146V35H150V15Z" fill="currentColor"/>
+  <path d="M170 15H166V35H170V15Z" fill="currentColor"/>
+  <path d="M190 15H186V35H190V15Z" fill="currentColor"/>
+  <path d="M210 15H206V35H210V15Z" fill="currentColor"/>
+</svg>
