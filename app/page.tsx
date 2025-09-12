@@ -2,7 +2,7 @@ import { getServerAuthSession } from "@/auth";
 import { Hero } from "@/components/Hero";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { MapPin, Globe, Compass, Share2, Calendar, Users, Plane, Hotel, Utensils, Mountain } from "lucide-react";
+import { MapPin, Globe, Compass, Share2, Calendar, Users, Plane, Hotel, Utensils, Mountain, ArrowRight, Play } from "lucide-react";
 import Link from "next/link";
 
 export default async function LandingPage() {
@@ -164,95 +164,6 @@ export default async function LandingPage() {
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"></div>
       </section>
-    </div>
-
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Everything You Need for Perfect Trips</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Our platform provides all the tools you need to plan and organize your travels effortlessly.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div className="w-14 h-14 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Plan Your Next Adventure?</h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of travelers who trust us to make their trips unforgettable.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <AuthButton
-              isLoggedIn={isLoggedIn}
-              className="w-full sm:w-auto bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 py-4 rounded-full transition-all duration-200 transform hover:scale-105"
-            >
-              {isLoggedIn ? 'Go to Dashboard' : 'Get Started for Free'}
-            </AuthButton>
-            {!isLoggedIn && (
-              <button className="w-full sm:w-auto bg-transparent border-2 border-white/30 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full transition-colors duration-200">
-                Learn More
-              </button>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-6 md:mb-0">
-              <h3 className="text-2xl font-bold text-white mb-2">Travito</h3>
-              <p className="max-w-xs">Making travel planning simple and enjoyable for everyone.</p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-              <div>
-                <h4 className="text-white font-semibold mb-4">Product</h4>
-                <ul className="space-y-2">
-                  <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Templates</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-white font-semibold mb-4">Company</h4>
-                <ul className="space-y-2">
-                  <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-white font-semibold mb-4">Support</h4>
-                <ul className="space-y-2">
-                  <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-sm text-gray-500">
-            <p>© {new Date().getFullYear()} Travito. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

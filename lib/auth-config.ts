@@ -14,7 +14,7 @@ const githubClientId = process.env.GITHUB_ID || '';
 const githubClientSecret = process.env.GITHUB_SECRET || '';
 const googleClientId = process.env.GOOGLE_CLIENT_ID || '';
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
-const authSecret = process.env.NEXTAUTH_SECRET || 'dev-secret-change-in-production';
+const authSecret = process.env.AUTH_SECRET || 'dev-secret-change-in-production';
 const nodeEnv = process.env.NODE_ENV || 'development';
 
 export const authOptions: NextAuthOptions = {
@@ -107,14 +107,12 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async session({ session, token, user }) {
-      // Add user ID to the session
       if (session.user) {
-        session.user.id = token.sub || user?.id || '';
+        session.user.id = token.sub || user?.id;
       }
       return session;
     },
     async jwt({ token, user }) {
-      // Add user ID to the token
       if (user) {
         token.sub = user.id;
       }
@@ -123,12 +121,21 @@ export const authOptions: NextAuthOptions = {
   },
   events: {
     async createUser({ user }) {
-      // This ensures the user is created with all required fields
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { emailVerified: new Date() },
-      });
+      // You can add any custom logic here when a new user is created
+      console.log('New user created:', user.email);
     },
   },
   debug: nodeEnv === 'development',
+  useSecureCookies: process.env.NODE_ENV === 'production',
+  cookies: {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
 };

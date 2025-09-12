@@ -1,36 +1,33 @@
-import NextAuth, { type DefaultSession, type DefaultUser } from 'next-auth';
+import NextAuth from 'next-auth';
 import { authOptions } from '@/lib/auth-config';
 
-// Extend the session type to include the user ID
-declare module 'next-auth' {
-  interface Session extends DefaultSession {
-    user: {
-      id: string;
-      // Add any other custom properties you need in the session
-    } & DefaultSession['user'];
-  }
-  
-  interface User extends DefaultUser {
-    id: string;
-  }
-}
-
-// Initialize NextAuth
+// Initialize NextAuth with the configuration
 const handler = NextAuth(authOptions);
 
 // Export the auth functions
-export const auth = handler.auth;
+export const { auth } = handler;
 export const signIn = handler.signIn;
 export const signOut = handler.signOut;
 
 // Export the handlers for the API route
-export const handlers = {
-  GET: handler.handlers?.GET || (() => new Response(null, { status: 405 })),
-  POST: handler.handlers?.POST || (() => new Response(null, { status: 405 })),
-};
+export const { GET, POST } = handler;
+
+// Extend the session type to include the user ID
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+}
 
 // Helper to get the session in server components
 export async function getServerAuthSession() {
+  // In Next.js 13+ app directory, we can use the auth() function directly
+  // which is provided by NextAuth.js for server components
   try {
     const session = await auth();
     return session;
