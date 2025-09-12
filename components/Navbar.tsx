@@ -128,21 +128,28 @@ export function Navbar() {
             </div>
           ) : (
             <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                asChild
-                className="text-foreground/80 hover:bg-primary/5 hover:text-primary"
+              <Link 
+                href="/auth/register"
+                className={cn(
+                  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-colors',
+                  'h-9 px-4 text-foreground/80 hover:bg-primary/5 hover:text-primary',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                  'disabled:pointer-events-none disabled:opacity-50'
+                )}
               >
-                <Link href="/auth/register">Register</Link>
-              </Button>
-              <Button
-                size="sm"
-                asChild
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                Register
+              </Link>
+              <Link 
+                href="/auth/signin"
+                className={cn(
+                  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-colors',
+                  'h-9 px-4 bg-primary text-primary-foreground hover:bg-primary/90',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                  'disabled:pointer-events-none disabled:opacity-50'
+                )}
               >
-                <Link href="/auth/signin">Sign In</Link>
-              </Button>
+                Sign In
+              </Link>
             </div>
           )}
         </div>

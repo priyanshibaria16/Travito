@@ -53,7 +53,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-muted-foreground text-sm opacity-0 animate-fade-in [animation-delay:0.1s] [animation-fill-mode:forwards]", className)}
+    className={cn("text-muted-foreground text-sm animate-fade-in [animation-delay:100ms]", className)}
     {...props}
   />
 ))
