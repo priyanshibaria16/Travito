@@ -1,21 +1,17 @@
 import * as React from "react"
-import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { hoverEffect?: boolean }
 >(({ className, hoverEffect = true, ...props }, ref) => (
-  <motion.div
+  <div
     ref={ref}
     className={cn(
       "rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300",
-      hoverEffect && "hover:shadow-lg hover:-translate-y-1 hover:border-primary/50",
+      hoverEffect && "hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 hover:scale-[1.02] active:scale-[0.98]",
       className
     )}
-    whileHover={hoverEffect ? { scale: 1.02 } : {}}
-    whileTap={hoverEffect ? { scale: 0.98 } : {}}
-    transition={{ type: "spring", stiffness: 400, damping: 10 }}
     {...props}
   />
 ))
@@ -40,14 +36,12 @@ const CardTitle = React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
-  <motion.h3
+  <h3
     ref={ref}
     className={cn(
-      "leading-none font-semibold",
+      "leading-none font-semibold hover:scale-[1.02] transition-transform duration-300",
       className
     )}
-    whileHover={{ scale: 1.02 }}
-    transition={{ type: "spring", stiffness: 400, damping: 10 }}
     {...props}
   />
 ))
@@ -57,12 +51,9 @@ const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <motion.p
+  <p
     ref={ref}
-    className={cn("text-muted-foreground text-sm", className)}
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3 }}
+    className={cn("text-muted-foreground text-sm opacity-0 animate-fade-in [animation-delay:0.1s] [animation-fill-mode:forwards]", className)}
     {...props}
   />
 ))

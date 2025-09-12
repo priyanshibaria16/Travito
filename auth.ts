@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import { authOptions } from '@/lib/auth-config';
+import { getServerSession } from 'next-auth/next';
 
 // Initialize NextAuth with the configuration
 const handler = NextAuth(authOptions);
@@ -26,10 +27,9 @@ declare module 'next-auth' {
 
 // Helper to get the session in server components
 export async function getServerAuthSession() {
-  // In Next.js 13+ app directory, we can use the auth() function directly
-  // which is provided by NextAuth.js for server components
   try {
-    const session = await auth();
+    // In Next.js 13+ app directory, we use getServerSession with the auth options
+    const session = await getServerSession(authOptions);
     return session;
   } catch (error) {
     console.error('Error getting auth session:', error);
